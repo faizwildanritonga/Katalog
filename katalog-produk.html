@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rimbun — Katalog Tanaman Hias</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="tailwind-config.js"></script>
+<link rel="stylesheet" href="katalog.css">
+</head>
+<body class="bg-cream text-ink antialiased">
+
+  <!-- ======================= NAVBAR ======================= -->
+  <!-- Requirement #5: Navbar responsif dengan hamburger di mobile -->
+  <header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-forest/10">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+
+      <a href="#" class="font-serif text-xl font-semibold text-forest">Rimbun</a>
+
+      <!-- Menu untuk layar >= md: tampil sebagai baris horizontal -->
+      <!-- Mobile-first: default-nya "hidden", baru muncul di md: ke atas -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-ink/80">
+        <a href="#beranda" class="hover:text-forest transition-colors">Beranda</a>
+        <a href="#katalog" class="hover:text-forest transition-colors">Katalog</a>
+        <a href="#tentang" class="hover:text-forest transition-colors">Tentang</a>
+        <a href="#kontak" class="hover:text-forest transition-colors">Kontak</a>
+      </nav>
+
+      <!-- Tombol hamburger: hanya tampil di bawah md: (mobile & tablet kecil) -->
+      <button id="hamburgerBtn" aria-expanded="false" aria-controls="mobileMenu"
+        class="md:hidden flex flex-col justify-center gap-1.5 w-9 h-9 items-center">
+        <span class="block w-6 h-0.5 bg-forest transition-transform" id="bar1"></span>
+        <span class="block w-6 h-0.5 bg-forest transition-opacity" id="bar2"></span>
+        <span class="block w-6 h-0.5 bg-forest transition-transform" id="bar3"></span>
+      </button>
+    </div>
+
+    <!-- Panel menu mobile: disembunyikan lewat class "hidden", di-toggle oleh JS -->
+    <nav id="mobileMenu" class="hidden md:hidden border-t border-forest/10 bg-cream">
+      <div class="max-w-6xl mx-auto px-5 py-4 flex flex-col gap-1 text-sm font-medium">
+        <a href="#beranda" class="py-2.5 text-ink/80 hover:text-forest">Beranda</a>
+        <a href="#katalog" class="py-2.5 text-ink/80 hover:text-forest">Katalog</a>
+        <a href="#tentang" class="py-2.5 text-ink/80 hover:text-forest">Tentang</a>
+        <a href="#kontak" class="py-2.5 text-ink/80 hover:text-forest">Kontak</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ======================= HERO ======================= -->
+  <section id="beranda" class="max-w-6xl mx-auto px-5 sm:px-8 py-12 md:py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+      <div class="order-2 lg:order-1">
+        <!-- Requirement #7: clamp() untuk typography.
+             clamp(min, preferred, max) -> ukuran font ikut lebar layar
+             tapi dibatasi biar gak kekecilan/kebesaran ekstrem. -->
+        <h1 class="font-serif font-semibold text-forest leading-[1.05] text-[clamp(2rem,4vw+1rem,3.5rem)]">
+          Tanaman rumahan yang mudah dirawat, dikirim dalam pot siap taruh
+        </h1>
+        <p class="mt-5 text-ink/70 text-[clamp(0.95rem,0.4vw+0.85rem,1.125rem)] max-w-md">
+          Kami memilihkan jenis tanaman yang tahan banting untuk pemula — cocok untuk meja kerja, sudut ruang tamu, atau kamar kos.
+        </p>
+        <a href="#katalog"
+          class="inline-block mt-7 bg-forest text-cream px-6 py-3 rounded-full text-sm font-medium hover:bg-forest/90 transition-colors">
+          Lihat katalog
+        </a>
+      </div>
+
+      <div class="order-1 lg:order-2">
+        <img
+          src="https://picsum.photos/seed/rimbunhero/800/600"
+          srcset="https://picsum.photos/seed/rimbunhero/500/375 500w,
+                  https://picsum.photos/seed/rimbunhero/800/600 800w,
+                  https://picsum.photos/seed/rimbunhero/1100/825 1100w"
+          sizes="(min-width:1024px) 45vw, 100vw"
+          alt="Tanaman hias dalam pot di dekat jendela"
+          class="w-full h-auto rounded-2xl object-cover aspect-[4/3]"
+          loading="eager">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================= KATALOG / GRID PRODUK ======================= -->
+  <section id="katalog" class="max-w-6xl mx-auto px-5 sm:px-8 py-12 md:py-16">
+    <h2 class="font-serif font-semibold text-forest text-[clamp(1.5rem,1.5vw+1rem,2.25rem)]">Katalog tanaman</h2>
+    <p class="mt-2 text-ink/60 max-w-lg">8 pilihan tanaman terlaris minggu ini. Stok berubah setiap hari.</p>
+
+    <!--
+      Requirement #3: Grid responsif 1 -> 2 -> 3 -> 4 kolom
+      Requirement #2: breakpoint yang dipakai di sini: sm (640px), md (768px), lg (1024px)
+
+      grid-cols-1        : mobile (default, di bawah 640px)      = 1 kolom
+      sm:grid-cols-2      : layar >= 640px (hp landscape/tablet kecil) = 2 kolom
+      md:grid-cols-3      : layar >= 768px (tablet)               = 3 kolom
+      lg:grid-cols-4      : layar >= 1024px (desktop)             = 4 kolom
+    -->
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+      <!-- ===== Requirement #4: Card produk (gambar + info + harga + tombol) ===== -->
+      <!-- Semua card di bawah strukturnya sama, cuma beda data -->
+
+      <article class="card-produk bg-white rounded-xl overflow-hidden border border-forest/10 flex flex-col">
+        <img src="https://picsum.photos/seed/monstera/500/400"
+          srcset="https://picsum.photos/seed/monstera/300/240 300w,
+                  https://picsum.photos/seed/monstera/500/400 500w"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+          alt="Monstera Deliciosa" loading="lazy"
+          class="w-full aspect-[4/3] object-cover">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-medium text-ink">Monstera Deliciosa</h3>
+          <p class="text-xs text-ink/50 mt-1">Cahaya sedang · disiram 1x/minggu</p>
+          <div class="mt-auto pt-4 flex items-center justify-between">
+            <span class="font-serif font-semibold text-forest">Rp 85.000</span>
+            <button class="btn-keranjang text-xs font-medium bg-forest text-cream px-3.5 py-2 rounded-full hover:bg-forest/90 transition-colors">
+              + Keranjang
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-produk bg-white rounded-xl overflow-hidden border border-forest/10 flex flex-col">
+        <img src="https://picsum.photos/seed/calathea/500/400"
+          srcset="https://picsum.photos/seed/calathea/300/240 300w,
+                  https://picsum.photos/seed/calathea/500/400 500w"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+          alt="Calathea Orbifolia" loading="lazy"
+          class="w-full aspect-[4/3] object-cover">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-medium text-ink">Calathea Orbifolia</h3>
+          <p class="text-xs text-ink/50 mt-1">Cahaya rendah · disiram 2x/minggu</p>
+          <div class="mt-auto pt-4 flex items-center justify-between">
+            <span class="font-serif font-semibold text-forest">Rp 120.000</span>
+            <button class="btn-keranjang text-xs font-medium bg-forest text-cream px-3.5 py-2 rounded-full hover:bg-forest/90 transition-colors">
+              + Keranjang
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-produk bg-white rounded-xl overflow-hidden border border-forest/10 flex flex-col">
+        <img src="https://picsum.photos/seed/sansevieria/500/400"
+          srcset="https://picsum.photos/seed/sansevieria/300/240 300w,
+                  https://picsum.photos/seed/sansevieria/500/400 500w"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+          alt="Sansevieria Trifasciata" loading="lazy"
+          class="w-full aspect-[4/3] object-cover">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-medium text-ink">Sansevieria Trifasciata</h3>
+          <p class="text-xs text-ink/50 mt-1">Cahaya rendah · disiram 2x/bulan</p>
+          <div class="mt-auto pt-4 flex items-center justify-between">
+            <span class="font-serif font-semibold text-forest">Rp 65.000</span>
+            <button class="btn-keranjang text-xs font-medium bg-forest text-cream px-3.5 py-2 rounded-full hover:bg-forest/90 transition-colors">
+              + Keranjang
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-produk bg-white rounded-xl overflow-hidden border border-forest/10 flex flex-col">
+        <img src="https://picsum.photos/seed/birkin/500/400"
+          srcset="https://picsum.photos/seed/birkin/300/240 300w,
+                  https://picsum.photos/seed/birkin/500/400 500w"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+          alt="Philodendron Birkin" loading="lazy"
+          class="w-full aspect-[4/3] object-cover">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-medium text-ink">Philodendron Birkin</h3>
+          <p class="text-xs text-ink/50 mt-1">Cahaya sedang · disiram 1x/minggu</p>
+          <div class="mt-auto pt-4 flex items-center justify-between">
+            <span class="font-serif font-semibold text-forest">Rp 150.000</span>
+            <button class="btn-keranjang text-xs font-medium bg-forest text-cream px-3.5 py-2 rounded-full hover:bg-forest/90 transition-colors">
+              + Keranjang
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-produk bg-white rounded-xl overflow-hidden border border-forest/10 flex flex-col">
+        <img src="https://picsum.photos/seed/aglaonema/500/400"
+          srcset="https://picsum.photos/seed/aglaonema/300/240 300w,
+                  https://picsum.photos/seed/aglaonema/500/400 500w"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+          alt="Aglaonema Red Ruby" loading="lazy"
+          class="w-full aspect-[4/3] object-cover">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-medium text-ink">Aglaonema Red Ruby</h3>
+          <p class="text-xs text-ink/50 mt-1">Cahaya sedang · disiram 1x/minggu</p>
+          <div class="mt-auto pt-4 flex items-center justify-between">
+            <span class="font-serif font-semibold text-forest">Rp 95.000</span>
+            <button class="btn-keranjang text-xs font-medium bg-forest text-cream px-3.5 py-2 rounded-full hover:bg-forest/90 transition-colors">
+              + Keranjang
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-produk bg-white rounded-xl overflow-hidden border border-forest/10 flex flex-col">
+        <img src="https://picsum.photos/seed/ficus/500/400"
+          srcset="https://picsum.photos/seed/ficus/300/240 300w,
+                  https://picsum.photos/seed/ficus/500/400 500w"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+          alt="Ficus Elastica" loading="lazy"
+          class="w-full aspect-[4/3] object-cover">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-medium text-ink">Ficus Elastica</h3>
+          <p class="text-xs text-ink/50 mt-1">Cahaya terang · disiram 1x/minggu</p>
+          <div class="mt-auto pt-4 flex items-center justify-between">
+            <span class="font-serif font-semibold text-forest">Rp 175.000</span>
+            <button class="btn-keranjang text-xs font-medium bg-forest text-cream px-3.5 py-2 rounded-full hover:bg-forest/90 transition-colors">
+              + Keranjang
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-produk bg-white rounded-xl overflow-hidden border border-forest/10 flex flex-col">
+        <img src="https://picsum.photos/seed/pilea/500/400"
+          srcset="https://picsum.photos/seed/pilea/300/240 300w,
+                  https://picsum.photos/seed/pilea/500/400 500w"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+          alt="Pilea Peperomioides" loading="lazy"
+          class="w-full aspect-[4/3] object-cover">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-medium text-ink">Pilea Peperomioides</h3>
+          <p class="text-xs text-ink/50 mt-1">Cahaya sedang · disiram 1x/minggu</p>
+          <div class="mt-auto pt-4 flex items-center justify-between">
+            <span class="font-serif font-semibold text-forest">Rp 70.000</span>
+            <button class="btn-keranjang text-xs font-medium bg-forest text-cream px-3.5 py-2 rounded-full hover:bg-forest/90 transition-colors">
+              + Keranjang
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card-produk bg-white rounded-xl overflow-hidden border border-forest/10 flex flex-col">
+        <img src="https://picsum.photos/seed/anthurium/500/400"
+          srcset="https://picsum.photos/seed/anthurium/300/240 300w,
+                  https://picsum.photos/seed/anthurium/500/400 500w"
+          sizes="(min-width:1024px) 22vw, (min-width:640px) 45vw, 90vw"
+          alt="Anthurium Crystallinum" loading="lazy"
+          class="w-full aspect-[4/3] object-cover">
+        <div class="p-4 flex flex-col flex-1">
+          <h3 class="font-medium text-ink">Anthurium Crystallinum</h3>
+          <p class="text-xs text-ink/50 mt-1">Cahaya sedang · disiram 2x/minggu</p>
+          <div class="mt-auto pt-4 flex items-center justify-between">
+            <span class="font-serif font-semibold text-forest">Rp 210.000</span>
+            <button class="btn-keranjang text-xs font-medium bg-forest text-cream px-3.5 py-2 rounded-full hover:bg-forest/90 transition-colors">
+              + Keranjang
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ======================= TENTANG ======================= -->
+  <section id="tentang" class="bg-forest/5 border-y border-forest/10">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h2 class="font-serif font-semibold text-forest text-[clamp(1.5rem,1.5vw+1rem,2.25rem)]">Kenapa Rimbun?</h2>
+        <p class="mt-4 text-ink/70 max-w-md">Setiap tanaman dicek kondisinya sebelum dikirim, dan datang dengan panduan perawatan singkat yang sesuai dengan iklim rumah di Indonesia.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div class="bg-white rounded-xl p-5 border border-forest/10">
+          <p class="font-serif text-2xl font-semibold text-forest">1.200+</p>
+          <p class="mt-1 text-ink/60">Tanaman terkirim</p>
+        </div>
+        <div class="bg-white rounded-xl p-5 border border-forest/10">
+          <p class="font-serif text-2xl font-semibold text-forest">4.8/5</p>
+          <p class="mt-1 text-ink/60">Rating pelanggan</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= FOOTER ======================= -->
+  <!-- Requirement #8: Footer -->
+  <footer id="kontak" class="bg-forest text-cream/80">
+    <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      <div>
+        <p class="font-serif text-lg font-semibold text-cream">Rimbun</p>
+        <p class="mt-3 text-sm text-cream/60">Katalog tanaman hias untuk rumah dan ruang kerja.</p>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-cream">Navigasi</p>
+        <ul class="mt-3 space-y-2 text-sm text-cream/60">
+          <li><a href="#beranda" class="hover:text-cream">Beranda</a></li>
+          <li><a href="#katalog" class="hover:text-cream">Katalog</a></li>
+          <li><a href="#tentang" class="hover:text-cream">Tentang</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-cream">Kontak</p>
+        <ul class="mt-3 space-y-2 text-sm text-cream/60">
+          <li>hello@rimbun.id</li>
+          <li>+62 812-0000-0000</li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-cream">Ikuti kami</p>
+        <ul class="mt-3 space-y-2 text-sm text-cream/60">
+          <li><a href="#" class="hover:text-cream">Instagram</a></li>
+          <li><a href="#" class="hover:text-cream">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-cream/10 py-5 text-center text-xs text-cream/50">
+      © 2026 Rimbun. Dibuat untuk Tugas Rutin 3 — Katalog Produk Responsif.
+    </div>
+  </footer>
+
+  <!-- Toast kecil saat tombol "+ Keranjang" ditekan (opsional, bukan requirement) -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-ink text-cream text-sm px-4 py-2.5 rounded-full opacity-0 pointer-events-none transition-opacity duration-300 z-50">
+    Ditambahkan ke keranjang
+  </div>
+
+  <script src="katalog.js"></script>
+
+</body>
+</html>
